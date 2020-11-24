@@ -1,4 +1,10 @@
 extends layouts/main
+include mixins/videoBlock
 
 block content
-    p Video Detail
+    .video-detail__container
+        //- src 이상함, video.fileUrl = /videos/uploads/videos/~~
+        //- 임시방편으로 `를 활용하여 표시함 
+        video(src=`/${video.fileUrl}`, controls=true)
+        h4.video-detail__title=video.title
+        h4.video-detail__description=video.description
