@@ -8,7 +8,7 @@ block content
         .video__player
             video(src=`/${video.fileUrl}`, controls=true)
         .video__info
-            a(href=routes.editVideo) Edit Video
+            a(href=routes.editVideo(video.id)) Edit Video
             h4.video-detail__title=video.title
             if video.views === 1
                 span.videoBlock__views 1 view
