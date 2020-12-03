@@ -3,18 +3,17 @@ include mixins/videoBlock
 
 block content
     .video-detail__container
-        //- src 이상함, video.fileUrl = /videos/uploads/videos/~~
-        //- 임시방편으로 `를 활용하여 표시함 
         .video__player
             video(src=`/${video.fileUrl}`, controls=true)
         .video__info
-            a(href=routes.editVideo(video.id)) Edit Video
-            h4.video-detail__title=video.title
+            a(href=routes.editVideo(video.id))
+                button Edit Video
+            h4.video__title=video.title
             if video.views === 1
-                span.videoBlock__views 1 view
+                span.video__views 1 view
             else
-                span.videoBlock__views #{video.views} views
-            p.video-detail__description=video.description
+                span.video__views #{video.views} views
+            p.video__description=video.description
         .video__comments
             if video.comments.length === 1
                 span.video__comment-number 1 comment

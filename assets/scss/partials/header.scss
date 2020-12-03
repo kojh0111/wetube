@@ -1,0 +1,47 @@
+.header {
+  position: sticky;
+  top: 0;
+  height: 50px;
+  background-color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 50px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 10px rgba(0, 0, 0, 0.24);
+  .header__wrapper {
+    padding: 5px 0px;
+    width: 100%;
+    margin: 0 auto;
+    max-width: 1200px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    .header__column {
+      font-weight: 600;
+      &:first-child {
+        font-size: 30px;
+        a {
+          color: black;
+        }
+        i {
+          color: $red;
+          margin-right: 3px;
+        }
+      }
+      &:nth-child(2) {
+        width: 100%;
+        justify-self: center;
+      }
+      &:last-child {
+        justify-self: end;
+      }
+      ul {
+        display: flex;
+        text-transform: uppercase;
+        li:not(:last-child) {
+          margin-right: 15px;
+        }
+        a {
+          color: rgba(0, 0, 0, 0.5);
+        }
+      }
+    }
+  }
+}
