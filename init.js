@@ -1,6 +1,7 @@
 import "./db";
 import "./models/Comment";
 import "./models/Video";
+import "./models/User";
 import dotenv from "dotenv";
 import app from "./app";
 
