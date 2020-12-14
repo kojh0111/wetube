@@ -61,6 +61,36 @@ export const postGithubLogin = (req, res) => {
   res.redirect(routes.home);
 };
 
+export const naverLogin = passport.authenticate("naver");
+
+export const naverLoginCallback = async (_, __, profile, done) => {
+  const {
+    displayName,
+    _json: { email, profile_image: avatarUrl, id },
+  } = profile;
+  try {
+    const user = await User.findOne({ email });
+    if (user) {
+      user.naverId = id;
+      user.save();
+      return done(null, user);
+    }
+    const newUser = await User.create({
+      email,
+      name: displayName,
+      naverId: id,
+      avatarUrl,
+    });
+    return done(null, newUser);
+  } catch (error) {
+    return done(error);
+  }
+};
+
+export const postNaverLogin = (req, res) => {
+  res.redirect(routes.home);
+};
+
 export const logout = (req, res) => {
   req.logout();
   res.redirect(routes.home);

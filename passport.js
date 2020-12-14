@@ -1,6 +1,10 @@
 import passport from "passport";
 import GithubStrategy from "passport-github";
-import { githubLoginCallback } from "./controllers/userController";
+import NaverStrategy from "passport-naver";
+import {
+  githubLoginCallback,
+  naverLoginCallback,
+} from "./controllers/userController";
 import User from "./models/User";
 import routes from "./routes";
 
@@ -14,6 +18,17 @@ passport.use(
       callbackURL: `http://localhost:4000${routes.githubCallback}`,
     },
     githubLoginCallback
+  )
+);
+
+passport.use(
+  new NaverStrategy(
+    {
+      clientID: process.env.NAVER_ID,
+      clientSecret: process.env.NAVER_SECRET,
+      callbackURL: `http://localhost:4000${routes.naverCallback}`,
+    },
+    naverLoginCallback
   )
 );
 
