@@ -5,14 +5,44 @@ const volumeBtn = document.getElementById("jsVolumeBtn");
 const fullScrnBtn = document.getElementById("jsFullScreen");
 const currentTime = document.getElementById("currentTime");
 const totalTime = document.getElementById("totalTime");
+const bar = document.getElementById("videoBar");
+const progressBar = document.getElementById("progressBar");
+
+function update() {
+  if (videoPlayer.ended) {
+    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+    window.clearInterval(update);
+  } else {
+    const progressPx = Math.round(
+      (videoPlayer.currentTime * bar.offsetWidth) / videoPlayer.duration
+    );
+    progressBar.style.width = progressPx + "px";
+    progressBar.style.height = "100%";
+    progressBar.style.backgroundColor = "rgba(14, 73, 181, 0.6)";
+  }
+}
 
 function handlePlayClick() {
   if (videoPlayer.paused) {
     videoPlayer.play();
     playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+    setInterval(update, 500);
   } else {
     videoPlayer.pause();
     playBtn.innerHTML = '<i class="fas fa-play"></i>';
+    window.clearInterval(update);
+  }
+}
+
+function clickedBar(event) {
+  if (!videoPlayer.ended) {
+    const mouseX = event.pageX - bar.offsetLeft;
+    const barSize = bar.offsetWidth;
+    const newTime = (mouseX / barSize) * videoPlayer.duration;
+    videoPlayer.currentTime = newTime;
+    progressBar.style.width = mouseX + "px";
+    progressBar.style.height = "100%";
+    progressBar.style.backgroundColor = "rgba(14, 73, 181, 0.6)";
   }
 }
 
@@ -91,11 +121,13 @@ function setTotalTime() {
 
 function init() {
   videoPlayer.addEventListener("click", handlePlayClick);
+  playBtn.addEventListener("click", handlePlayClick);
   document.addEventListener("keydown", keyboardShortcuts);
   volumeBtn.addEventListener("click", handleVolumeClick);
   fullScrnBtn.addEventListener("click", goFullScrn);
   videoPlayer.addEventListener("loadedmetadata", setTotalTime);
   videoPlayer.addEventListener("timeupdate", setCurrentTime);
+  bar.addEventListener("click", clickedBar);
 }
 
 if (videoContainer) {
