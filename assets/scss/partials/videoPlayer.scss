@@ -20,7 +20,7 @@
     background-color: rgba(0, 0, 0, 0.5);
     padding: 10px 0px;
     display: grid;
-    grid-template-columns: 120px 1fr 80px 80px;
+    grid-template-columns: 120px 1fr 80px 50px 30px;
     font-size: 16px;
     .videoPlayer__column:first-child {
       display: flex;
@@ -43,10 +43,20 @@
         display: block;
       }
     }
-    .videoPlayer__column:last-child {
-      justify-self: end;
+    .videoPlayer__column:nth-child(4) {
+      justify-content: space-between;
+      .videoPlayer__volume {
+        position: absolute;
+        padding: 0;
+        opacity: 0;
+        top: -48px;
+        right: 24px;
+        transform: rotate(-90deg);
+        z-index: 10;
+        width: 80px;
+      }
       span {
-        margin-right: 10px;
+        margin: 0px 5px;
       }
     }
     i {

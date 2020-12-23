@@ -7,6 +7,7 @@ const currentTime = document.getElementById("currentTime");
 const totalTime = document.getElementById("totalTime");
 const bar = document.getElementById("videoBar");
 const progressBar = document.getElementById("progressBar");
+const volumeRange = document.getElementById("jsVolume");
 
 function update() {
   if (videoPlayer.ended) {
@@ -54,11 +55,22 @@ function keyboardShortcuts(event) {
   }
 }
 
+function hideVolumeRange() {
+  volumeRange.style.opacity = 0;
+}
+
+function showVolumeRange() {
+  volumeRange.style.opacity = 1;
+  volumeRange.addEventListener("mouseout", hideVolumeRange);
+}
+
 function handleVolumeClick() {
   if (videoPlayer.muted) {
     videoPlayer.muted = false;
     volumeBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+    volumeRange.value = videoPlayer.volume;
   } else {
+    volumeRange.value = 0;
     videoPlayer.muted = true;
     volumeBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
   }
@@ -119,15 +131,40 @@ function setTotalTime() {
   totalTime.innerHTML = totalTimeString;
 }
 
+function handleEnded() {
+  videoPlayer.currentTime = 0;
+  playBtn.innerHTML = '<i class="fas fa-play"></i>';
+}
+
+function handleVolumeRange(event) {
+  const {
+    target: { value },
+  } = event;
+  videoPlayer.volume = value;
+  if (value >= 0.6) {
+    volumeBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+  } else if (value >= 0.3) {
+    volumeBtn.innerHTML = '<i class="fas fa-volume-down"></i>';
+  } else if (value >= 0.1) {
+    volumeBtn.innerHTML = '<i class="fas fa-volume-off"></i>';
+  } else {
+    volumeBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+  }
+}
+
 function init() {
+  videoPlayer.volume = 0.5;
   videoPlayer.addEventListener("click", handlePlayClick);
   playBtn.addEventListener("click", handlePlayClick);
+  bar.addEventListener("click", clickedBar);
   document.addEventListener("keydown", keyboardShortcuts);
   volumeBtn.addEventListener("click", handleVolumeClick);
+  volumeBtn.addEventListener("mouseover", showVolumeRange);
   fullScrnBtn.addEventListener("click", goFullScrn);
   videoPlayer.addEventListener("loadedmetadata", setTotalTime);
   videoPlayer.addEventListener("timeupdate", setCurrentTime);
-  bar.addEventListener("click", clickedBar);
+  videoPlayer.addEventListener("ended", handleEnded);
+  volumeRange.addEventListener("input", handleVolumeRange);
 }
 
 if (videoContainer) {
